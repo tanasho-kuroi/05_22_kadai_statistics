@@ -2,6 +2,8 @@
 
 ## デプロイ先
 
+https://tanasho-kuroi.github.io/05_22_kadai_statistics/.
+
 ## プロダクトの紹介
 
 -
