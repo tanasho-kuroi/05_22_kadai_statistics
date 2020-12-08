@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <title>位置情報取得&map表示</title>
+      <style>
+         html,
+         body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+         }
+
+         #map {
+            height: calc(100% - 102px);
+            margin: 0;
+            padding: 0;
+         }
+      </style>
+   </head>
+
+   <body>
+      <h1>位置情報取得&Map表示</h1>
+      <div id="map"></div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script
+         src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Anot2seSYT5tLm6GDQaJtGKArvNjt2oc3fkJn73EO6pOJwjT0EgNfmelMKH3LvfN"
+         async
+         defer
+      ></script>
+      <script>
+         // map表示用に使用する変数
+         let map;
+
+         // 現在地を取得するときのオプション
+         const option = {
+            enableHighAccuracy: true,
+            maximumAge: 20000,
+            timeout: 10000,
+         };
+
+         // 現在地の取得に成功したときの関数
+         function mapsInit(position) {
+            console.log(position);
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            console.log(lat, lng);
+            map = new Microsoft.Maps.Map('#map', {
+               center: {
+                  latitude: lat,
+                  longitude: lng,
+               },
+               zoom: 15,
+            });
+            pushPin(lat, lng, map); //ピンを立てる関数
+            generateInfobox(lat, lng, map); //infoboxを生成する関数
+         }
+
+         // 緯度，経度，表示したいマップを入力するとピンを立てる関数を定義．
+         // ピンの色と表示するよう設定．
+         function pushPin(lat, lng, map) {
+            const location = new Microsoft.Maps.Location(lat, lng);
+            const pin = new Microsoft.Maps.Pushpin(location, {
+               color: 'navy', // 色の設定
+               visible: true, // これ書かないとピンが見えない
+            });
+            map.entities.push(pin);
+         }
+
+         function generateInfobox(lat, lng, map) {
+            const location = new Microsoft.Maps.Location(lat, lng);
+            const infobox = new Microsoft.Maps.infobox(location, {
+               title: 'イマココ',
+               description: "I'm here!!!",
+            });
+            infobox.setMap(map);
+         }
+
+         // 現在位置の取得に失敗したの実行する関数
+         function showError(error) {
+            console.log(error);
+            console.log(GeolocationPositionError);
+            let e = '';
+            if (error.code == 1) {
+               e = '位置情報が許可されてません';
+            }
+            if (error.code == 2) {
+               e = '現在位置を特定できません';
+            }
+            if (error.code == 3) {
+               e = '位置情報を取得する前にタイムアウトになりました';
+            }
+            alert('error：' + e);
+         }
+
+         // 位置情報を取りにいく処理
+         //  -> getCurrentPositionの引数が、(Succcess, Error, Option)になっていて、それぞれ付与された情報を引数にして関数を呼び出しただけ
+         function getPosition() {
+            navigator.geolocation.getCurrentPosition(mapsInit, showError, option);
+         }
+
+         window.onload = function () {
+            getPosition();
+         };
+      </script>
+   </body>
+</html>
