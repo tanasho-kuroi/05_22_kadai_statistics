@@ -1,0 +1,90 @@
+* {
+   margin: 0;
+   padding: 0;
+}
+table.select {
+   position: absolute;
+   top: 10px;
+   left: 10px;
+   z-index: 1000;
+}
+table.select th {
+   text-align: left;
+   width: 100px;
+}
+div#map-container {
+   width: 980px;
+}
+div#frame {
+   width: 680px;
+   position: absolute;
+   top: 230px;
+   left: 159px;
+   display: none;
+   background: #fff;
+   z-index: 2000;
+}
+div#title {
+   position: absolute;
+   width: 100%;
+   font-size: 20px;
+   text-align: center;
+   z-index: 10;
+}
+div#close {
+   position: absolute;
+   top: 0px;
+   right: 10px;
+   z-index: 10;
+}
+div#frame a {
+   font-size: 30px;
+   text-decoration: none;
+}
+
+div#mygraph {
+   width: 650px;
+   height: 400px;
+   background: #fff;
+}
+select {
+   width: 150px;
+}
+select#statsdataid {
+   width: 300px;
+}
+select#cat01 {
+   width: 300px;
+}
+
+table.cond {
+   margin-top: 10px;
+   margin-left: 30px;
+}
+table.cond th {
+   text-align: left;
+   width: 120px;
+}
+#mygraph {
+   background-color: #fff;
+   position: relative;
+}
+#mygraph svg {
+   top: 0;
+   left: 0;
+   position: absolute;
+}
+#mygraph svg circle {
+   font-size: 11px;
+   margin: 10px 0 0;
+}
+#mygraph .axis path,
+#mygraph .axis line {
+   fill: none;
+   shape-rendering: crispedges;
+   stroke: #666;
+   stroke-width: 1px;
+}
+#mygraph .axis text {
+   font-size: 11px;
+}

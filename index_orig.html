@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>政府統計(人口関連)</title>
+      <title>ＡＰＩ利用サンプルサイト（Javascript版）</title>
       <meta charset="UTF-8" />
       <script src="./js/jquery-1.11.1.min.js"></script>
       <script src="./js/jquery.japan-map.js"></script>
@@ -190,10 +190,6 @@
                            return;
                         }
 
-                        // ￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥
-                        // ￥￥￥￥￥￥￥￥￥￥￥￥￥　  統計データ抽出 　  ￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥
-                        // ￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥
-                        // ￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥
                         // 統計データの数値情報を抽出します
                         // Javascriptのfilterを使って、jsonデータからデータを抽出します
                         // ・JSONデータ＞GET_STATS_DATA＞STATISTICAL_DATA＞DATA_INF＞VALUEのデータ
@@ -248,8 +244,7 @@
                            drawLineGraph(graphData, maxValue, minValue, maxYear, minYear);
                         }
                         // 社会・人口統計体系
-                        // else if (statsdataid == 'C00200502') {
-                        else if (statsdataid == 'C00200502' || statsid == '00450012') {
+                        else if (statsdataid == 'C00200502') {
                            statsdataid += areaCode;
 
                            // メタ情報から横軸事項を取得
@@ -441,9 +436,7 @@
                                  statsid == '0003094385'
                               ) {
                                  return true;
-                                 // } else if (statsid == 'C00200502') {
-                                 //　　　　　　　　追加！！
-                              } else if (statsid == 'C00200502' || statsid == '00450012') {
+                              } else if (statsid == 'C00200502') {
                                  // 社会・人口統計体系の場合、単位が％のものだけを表示します
                                  if (item['@unit'] == '％') {
                                     return true;
@@ -452,7 +445,6 @@
                            });
 
                            for (var key in cat01Data) {
-                              // 分類事項01コンボボックスに追加します
                               // 分類事項01コンボボックスに追加します
                               $('#cat01').append(
                                  $('<option>')
@@ -535,12 +527,6 @@
       /></noscript>
       <!-- End Piwik Code -->
    </head>
-
-   <!-- ＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋ -->
-   <!-- ＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋ -->
-   <!-- ＋＋＋＋＋＋＋　　　　　ここからHTML　　　　　＋＋＋＋＋＋＋＋ -->
-   <!-- ＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋ -->
-   <!-- ＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋ -->
    <body>
       <table class="select">
          <tr>
@@ -552,8 +538,6 @@
                   <option value="0003006719">人口推計：平成20年10月1日現在推計人口</option>
                   <option value="0003094385">人口推計：平成25年10月1日現在人口推計</option>
                   <option value="C00200502">社会・人口統計体系</option>
-                  <!-- ＋＋＋＋＋＋＋　　　　　ひとつ項目追加！！　　　　　＋＋＋＋＋＋＋＋ -->
-                  <option value="00450012">生命表</option>
                </select>
             </td>
          </tr>
