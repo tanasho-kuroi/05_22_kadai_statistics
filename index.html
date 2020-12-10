@@ -12,99 +12,133 @@
             margin: 0;
             padding: 0;
          }
-
+         /* 
          #map {
             height: calc(100% - 102px);
             margin: 0;
             padding: 0;
-         }
+         } */
       </style>
    </head>
 
    <body>
-      <h1>位置情報取得&Map表示</h1>
-      <div id="map"></div>
+      <h1>統計表示</h1>
+      <div id="test"></div>
+      <div id="graph"></div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      <script
-         src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Anot2seSYT5tLm6GDQaJtGKArvNjt2oc3fkJn73EO6pOJwjT0EgNfmelMKH3LvfN"
-         async
-         defer
-      ></script>
+      <script src="http(s)://api.e-stat.go.jp/rest/2.0/app/json/getStatsData?appId=3fffa82c3c57d751d02aac10439ef72349886b70&statsDataId=C0020050213000&cdCat01=%23A03503"></script>
+
       <script>
-         // map表示用に使用する変数
-         let map;
+         // アプリケーションID
+         var APP_ID = '3fffa82c3c57d751d02aac10439ef72349886b70';
+         // API URL
+         var API_URL = 'http://api.e-stat.go.jp/rest/2.0t/app/json/getStatsData';
+         // 統計表ID
+         var statsDataId = 'C0020050213000';
+         //コード
+         var cdCat01 = '#A03503';
 
-         // 現在地を取得するときのオプション
-         const option = {
-            enableHighAccuracy: true,
-            maximumAge: 20000,
-            timeout: 10000,
-         };
+         var GET_URL = API_URL;
+         GET_URL += '?appId=' + escape(APP_ID);
+         GET_URL += '&statsDataId=' + escape(statsDataId);
+         GET_URL += '&cdCat01=' + escape(cdCat01);
+         url = GET_URL;
 
-         // 現在地の取得に成功したときの関数
-         function mapsInit(position) {
-            console.log(position);
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            console.log(lat, lng);
-            map = new Microsoft.Maps.Map('#map', {
-               center: {
-                  latitude: lat,
-                  longitude: lng,
-               },
-               zoom: 15,
+         $.getJSON(url, function (jsonData) {}).success(function (jsonData) {
+            var statusCode = jsonData['GET_STATS_DATA']['RESULT']['STATUS'];
+            // 統計データの数値情報を抽出します
+            // Javascriptのfilterを使って、jsonデータからデータを抽出します
+            var valueData = jsonData['GET_STATS_DATA']['STATISTICAL_DATA']['DATA_INF'][
+               'VALUE'
+            ].filter(function (item, index) {
+               return true;
             });
-            pushPin(lat, lng, map); //ピンを立てる関数
-            generateInfobox(lat, lng, map); //infoboxを生成する関数
-         }
+            console.log(valueData);
+         });
+      </script>
 
-         // 緯度，経度，表示したいマップを入力するとピンを立てる関数を定義．
-         // ピンの色と表示するよう設定．
-         function pushPin(lat, lng, map) {
-            const location = new Microsoft.Maps.Location(lat, lng);
-            const pin = new Microsoft.Maps.Pushpin(location, {
-               color: 'navy', // 色の設定
-               visible: true, // これ書かないとピンが見えない
-            });
-            map.entities.push(pin);
-         }
+      <!-- // <script
+      //    src="https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Anot2seSYT5tLm6GDQaJtGKArvNjt2oc3fkJn73EO6pOJwjT0EgNfmelMKH3LvfN"
+      //    async
+      //    defer
+      // ></script> -->
 
-         function generateInfobox(lat, lng, map) {
-            const location = new Microsoft.Maps.Location(lat, lng);
-            const infobox = new Microsoft.Maps.infobox(location, {
-               title: 'イマココ',
-               description: "I'm here!!!",
-            });
-            infobox.setMap(map);
-         }
+      <script>
+         //    // map表示用に使用する変数
+         //    let map;
 
-         // 現在位置の取得に失敗したの実行する関数
-         function showError(error) {
-            console.log(error);
-            console.log(GeolocationPositionError);
-            let e = '';
-            if (error.code == 1) {
-               e = '位置情報が許可されてません';
-            }
-            if (error.code == 2) {
-               e = '現在位置を特定できません';
-            }
-            if (error.code == 3) {
-               e = '位置情報を取得する前にタイムアウトになりました';
-            }
-            alert('error：' + e);
-         }
+         //    // 現在地を取得するときのオプション
+         //    const option = {
+         //       enableHighAccuracy: true,
+         //       maximumAge: 20000,
+         //       timeout: 10000,
+         //    };
 
-         // 位置情報を取りにいく処理
-         //  -> getCurrentPositionの引数が、(Succcess, Error, Option)になっていて、それぞれ付与された情報を引数にして関数を呼び出しただけ
-         function getPosition() {
-            navigator.geolocation.getCurrentPosition(mapsInit, showError, option);
-         }
+         //    // 現在地の取得に成功したときの関数
+         //    function mapsInit(position) {
+         //       console.log(position);
+         //       const lat = position.coords.latitude;
+         //       const lng = position.coords.longitude;
+         //       console.log(lat, lng);
+         //       map = new Microsoft.Maps.Map('#map', {
+         //          center: {
+         //             latitude: lat,
+         //             longitude: lng,
+         //          },
+         //          zoom: 15,
+         //       });
+         //       pushPin(lat, lng, map); //ピンを立てる関数
+         //       generateInfobox(lat, lng, map); //infoboxを生成する関数
+         //    }
 
-         window.onload = function () {
-            getPosition();
-         };
+         //    // 緯度，経度，表示したいマップを入力するとピンを立てる関数を定義．
+         //    // ピンの色と表示するよう設定．
+         //    function pushPin(lat, lng, map) {
+         //       const location = new Microsoft.Maps.Location(lat, lng);
+         //       const pin = new Microsoft.Maps.Pushpin(location, {
+         //          color: 'navy', // 色の設定
+         //          visible: true, // これ書かないとピンが見えない
+         //       });
+         //       map.entities.push(pin);
+         //    }
+
+         //    function generateInfobox(lat, lng, map) {
+         //       const location = new Microsoft.Maps.Location(lat, lng);
+         //       const infobox = new Microsoft.Maps.infobox(location, {
+         //          title: 'イマココ',
+         //          description: "I'm here!!!",
+         //       });
+         //       infobox.setMap(map);
+         //    }
+
+         //    // 現在位置の取得に失敗したの実行する関数
+         //    function showError(error) {
+         //       console.log(error);
+         //       console.log(GeolocationPositionError);
+         //       let e = '';
+         //       if (error.code == 1) {
+         //          e = '位置情報が許可されてません';
+         //       }
+         //       if (error.code == 2) {
+         //          e = '現在位置を特定できません';
+         //       }
+         //       if (error.code == 3) {
+         //          e = '位置情報を取得する前にタイムアウトになりました';
+         //       }
+         //       alert('error：' + e);
+         //    }
+
+         //    // 位置情報を取りにいく処理
+         //    //  -> getCurrentPositionの引数が、(Succcess, Error, Option)になっていて、それぞれ付与された情報を引数にして関数を呼び出しただけ
+         //    function getPosition() {
+         //       navigator.geolocation.getCurrentPosition(mapsInit, showError, option);
+         //    }
+
+         //    window.onload = function () {
+         //       getPosition();
+         //    };
+         //
       </script>
    </body>
 </html>
